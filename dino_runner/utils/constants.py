@@ -70,8 +70,14 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 FONDO_MENU = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondo_start.jpg'))
+FLY = [
+    pygame.image.load(os.path.join(IMG_DIR, "Other/dinoelicoptero1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Other/dinoelicoptero2.png")), 
+]
+
+FONDO_GAME = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondoinicio1.jpg'))
 
 
 DEFAULT_TYPE = "default"
 
-HEART_COUNT = 1    #agregamos un contador de corazones
+HEART_COUNT = 2    #agregamos un contador de corazones

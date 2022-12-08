@@ -1,5 +1,5 @@
 import pygame
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONDO_MENU
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONDO_MENU, FONDO_GAME
 from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.obstacle.obstaclesManager import ObstacleManager
 from dino_runner.components.cloud.cloud import Cloud
@@ -26,6 +26,8 @@ class Game:
         self.player_heart_manager = PlayerHeartMananger()
 
     def run(self):
+        self.player.dino_fly = False
+        self.player.Y_POS = 310
         self.obstacle_manager.reset_obstacles(self)
         self.player_heart_manager.reset_hearts()
         self.playing = True 
@@ -52,7 +54,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((255,255,255))
         self.player.draw(self.screen)
         self.draw_background()
         self.obstacle_manager.draw(self.screen)
@@ -73,6 +75,15 @@ class Game:
 
     def score(self):
         self.points += 1 
+
+        if self.points == 200:
+            self.player.dino_fly = True
+        elif self.points < 400:
+            self.player.dino_fly = False
+
+        
+
+        
 
         if self.points %  100 == 0 :
             self.game_speed += 1

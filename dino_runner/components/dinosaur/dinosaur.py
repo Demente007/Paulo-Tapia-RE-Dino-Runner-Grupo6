@@ -1,5 +1,5 @@
 import pygame
-from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING
+from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING, FLY
 from pygame.sprite import Sprite
 
 class Dinosaur(Sprite):
@@ -17,19 +17,29 @@ class Dinosaur(Sprite):
         self.dino_run = True
         self.dino_duck = False
         self.dino_jump = False
+        self.dino_fly = False
         self.jump_vel = self.JUMP_VEL
 
     def update(self, user_imput):
-        if self.dino_jump:
-            self.jump()
 
-        if self.dino_duck:
-            self.duck()
+        if self.dino_fly and not self.dino_run:
+            self.fly()
 
-        if self.dino_run:
+        elif self.dino_run:
             self.run()
 
-        if user_imput[pygame.K_DOWN] and not self.dino_jump:
+        elif self.dino_jump:
+            self.jump()
+
+        elif self.dino_duck:
+            self.duck()
+        
+
+
+        if user_imput[pygame.K_SPACE] and self.dino_fly:
+            self.Y_POS -= 15
+
+        elif user_imput[pygame.K_DOWN] and not self.dino_jump:
             self.dino_run = False
             self.dino_duck = True
             self.dino_jump = False
@@ -37,6 +47,8 @@ class Dinosaur(Sprite):
             self.dino_run = False
             self.dino_duck = False
             self.dino_jump = True 
+
+        
         elif not self.dino_jump:
             self.dino_run = True
             self.dino_duck = False 
@@ -73,3 +85,11 @@ class Dinosaur(Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
+
+    def fly(self):
+        self.image = FLY[0] if self.step_index < 5 else FLY[1]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = self.Y_POS
+        self.step_index += 1
+        self.Y_POS += 4
