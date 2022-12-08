@@ -2,7 +2,7 @@ import pygame
 from dino_runner.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 FONT_STYLE = 'freesansbold.ttf'
-black_color = (0, 0, 0)
+black_color = (255, 255, 255)
 
 
 def get_score_element(points):
@@ -17,5 +17,5 @@ def get_centered_message(message, width=SCREEN_WIDTH//2, heigth = SCREEN_HEIGHT/
     font = pygame.font.Font(FONT_STYLE, 30)
     text = font.render(message, True, black_color)
     text_rect = text.get_rect()
-    text_rect.center = (width, heigth)
+    text_rect.center = (width, heigth+170)
     return text, text_rect

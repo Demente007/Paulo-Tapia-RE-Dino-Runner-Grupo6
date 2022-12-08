@@ -1,5 +1,5 @@
 import pygame
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONDO_MENU
 from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.obstacle.obstaclesManager import ObstacleManager
 from dino_runner.components.cloud.cloud import Cloud
@@ -82,8 +82,8 @@ class Game:
 
     def show_menu(self):
         self.runing = True
-        white_color = (255, 255, 255)
-        self.screen.fill(white_color)
+        white_color = (FONDO_MENU)
+        self.screen.blit(white_color, [0,0])
         self.print_menu_elements(self.death_count)
         pygame.display.update()
         self.handle_key_events_on_menu()
@@ -97,9 +97,12 @@ class Game:
             self.screen.blit(text, text_rect)
         elif death_count > 0:
             text, text_rect = get_centered_message("Press any Key to Restart")
-            score, score_rect = get_centered_message('Your Score: '+ str(self.points), heigth=half_screen_heigth+50)####### observacion
+            score, score_rect = get_centered_message('Your Score: '+ str(self.points), heigth=half_screen_heigth+40)####### observacion
+            death, death_rect = get_centered_message("your death: "+ str(self.death_count), heigth=half_screen_heigth+90)
+
             self.screen.blit(score,score_rect)     # imprimimos el socore y su rectangulo 
             self.screen.blit(text, text_rect)    #imprimimos el texto y su rectangulo'''
+            self.screen.blit(death, death_rect)
 
     def handle_key_events_on_menu(self):
         for event in pygame.event.get():     #for para obtener eventos
@@ -111,6 +114,10 @@ class Game:
                 pygame.quit()
                 exit()
             if event.type == pygame.KEYDOWN:   #si el evento detecta una tecla presionada empieza el juego
-                self.points = 0
-                self.game_speed = 20
+                self.points = 0                         # reseteamos los points del game
+                self.game_speed = 20             #reseteamos la velocidad del juego
                 self.run()
+
+
+
+

@@ -69,6 +69,9 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+FONDO_MENU = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondo_start.jpg'))
+
+
 DEFAULT_TYPE = "default"
 
 HEART_COUNT = 1    #agregamos un contador de corazones
