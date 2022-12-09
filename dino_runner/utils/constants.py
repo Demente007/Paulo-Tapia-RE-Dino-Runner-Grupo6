@@ -80,7 +80,7 @@ FONDO_GAME = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondoinicio1.jpg'))
 
 DEFAULT_TYPE = "default"
 
-HEART_COUNT = 6    #agregamos un contador de corazones
+HEART_COUNT = 8    #agregamos un contador de corazones
 
 SHIELD_TYPE = 'shield'
 

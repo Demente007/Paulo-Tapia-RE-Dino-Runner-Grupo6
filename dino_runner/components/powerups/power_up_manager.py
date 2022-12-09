@@ -19,7 +19,7 @@ class PowerUpManager:
 
     def generate_power_ups(self, points):
         self.points = points
-        self.azar = random.randint(0,4)
+        self.azar = random.randint(0,3)
         if len(self.power_ups) == 0:
             if self.azar == 0:
                 if self.when_appears == self.points:

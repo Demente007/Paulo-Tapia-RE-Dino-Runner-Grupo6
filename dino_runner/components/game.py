@@ -27,7 +27,7 @@ class Game:
         self.cloud = Cloud()
         self.points = 0
         self.runing = True
-        self.death_count = 0
+        self.death_count = 0               #contador de muertes 
         self.player_heart_manager = PlayerHeartMananger()
         self.power_up_manager = PowerUpManager()
         self.level_2 = False                             #activa el fondo en nivel 2
@@ -108,19 +108,19 @@ class Game:
                 self.player.misil_rectx += self.game_speed + 10
         elif self.level_1:
             self.fondo1()
-        self.screen.blit(PORTAL, (self.x_pos_portal, self.y_pos_portal))
-        player_rect = pygame.draw.rect(self.screen, (0,0,0),((self.x_pos_portal + 170, self.y_pos_portal + 200), (20,200)))
+        self.screen.blit(PORTAL, (self.x_pos_portal, self.y_pos_portal))      #dibujando los portales 
+        player_rect = pygame.draw.rect(self.screen, (0,0,0),((self.x_pos_portal + 170, self.y_pos_portal + 200), (20,200))) #dibujando rectangulo para qie colidree
         
         if self.player.dino_rect.colliderect(player_rect):
             pygame.time.delay(150)
-            if self.points > 400:
+            if self.points > 2000:
                 self.playing_final = True
                 self.playing = False
-            elif self.points <=400:
+            elif self.points <=2000:
                 self.level_1 = False
                 self.level_2 = True
                 self.player.dino_fly = True
-        if self.points >= 200 :           # dibujando el portal
+        if self.points >= 1500 :           # dibujando el portal
             self.draw_portal()
         self.score()
         self.player.draw(self.screen)
@@ -137,9 +137,10 @@ class Game:
         self.power_up_manager.draw(self.screen)
 
     def fondo2(self):
-        self.screen.blit(FONDO2, (self.x_pos_fondo2, self.y_pos_fondo2))
-        self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))
-        if self.x_pos_fondo2 <= -SCREEN_WIDTH:
+        self.screen.blit(FONDO2, (self.x_pos_fondo2, self.y_pos_fondo2))          #dibujando el fondo 2 
+        self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))  #redibujando el fondo 2
+        if self.x_pos_fondo2 <= -SCREEN_WIDTH:                                               #si la posicion del fondo en x es menor al negativo del ancho volvemos a dibujar
+
             self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))
             self.x_pos_fondo2 = 0
         self.x_pos_fondo2 -= 1
@@ -147,14 +148,14 @@ class Game:
     
     def draw_final(self): 
         self.clock.tick(FPS)
-        self.screen.blit(FONDO_FINAL, (self.x_pos_final_fondo, self.y_pos_fondo2))
+        self.screen.blit(FONDO_FINAL, (self.x_pos_final_fondo, self.y_pos_fondo2))  
         self.player.draw(self.screen)
         pygame.display.update()
 
-    def update_final(self):
+    def update_final(self):                   #acutualizando el fondo def final 
         if self.x_pos_final_fondo >= -450:
             self.x_pos_final_fondo -= 1
-        if self.player.despedida:
+        if self.player.despedida:                #si el dino_despedida esta true   llamamos al run final2 qie
             self.player.run_final2()
         else:
             self.player.run_final()
@@ -191,7 +192,7 @@ class Game:
     def show_menu(self):
         self.runing = True         ##############
         white_color = (FONDO_MENU)
-        self.screen.blit(white_color, [0,0])
+        self.screen.blit(white_color, [0,0])      #dibujando el fondo del menu 
         self.print_menu_elements(self.death_count)
         pygame.display.update()
 
@@ -205,7 +206,7 @@ class Game:
         elif death_count > 0:
             text, text_rect = get_centered_message("Press any Key to Restart")
             score, score_rect = get_centered_message('Your Score: '+ str(self.points), heigth=half_screen_heigth+40)####### observacion
-            death, death_rect = get_centered_message("your death: "+ str(self.death_count), heigth=half_screen_heigth+90)
+            death, death_rect = get_centered_message("your death: "+ str(self.death_count), heigth=half_screen_heigth+90)  ##33implementacion
 
             self.screen.blit(score,score_rect)     # imprimimos el socore y su rectangulo 
             self.screen.blit(text, text_rect)    #imprimimos el texto y su rectangulo'''
@@ -231,7 +232,7 @@ class Game:
    
     def draw_portal(self):
         self.x_pos_portal -= self.game_speed
-        if self.points >= 450 and self.points< 455:
+        if self.points >= 1500 and self.points< 1505:
             self.x_pos_portal = SCREEN_WIDTH + 200
             self.y_pos_portal = -50 
     
