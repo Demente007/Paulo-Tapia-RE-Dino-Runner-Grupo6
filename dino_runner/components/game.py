@@ -232,7 +232,7 @@ class Game:
    
     def draw_portal(self):
         self.x_pos_portal -= self.game_speed
-        if self.points >= 1500 and self.points< 1505:
+        if self.points >= 2000 and self.points< 2005:
             self.x_pos_portal = SCREEN_WIDTH + 200
             self.y_pos_portal = -50 
     
