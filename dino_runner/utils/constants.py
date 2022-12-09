@@ -80,7 +80,7 @@ FONDO_GAME = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondoinicio1.jpg'))
 
 DEFAULT_TYPE = "default"
 
-HEART_COUNT = 2    #agregamos un contador de corazones
+HEART_COUNT = 6    #agregamos un contador de corazones
 
 SHIELD_TYPE = 'shield'
 
@@ -94,4 +94,28 @@ FONDO2 = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondo2.png'))
 HEAD_OBSTACLE = [
     pygame.image.load(os.path.join(IMG_DIR, "Other/cabezaobs1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Other/cabezaobs2.png")), 
+]
+
+FONDO_FINAL = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondofinal1.png'))
+
+SONIC_RUN = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/sonicrun1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/sonicrun2.png"))
+]
+SONIC_DUCK = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/agacharse1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/agacharse2.png"))
+]
+
+SONIC_JUMP =  pygame.image.load(os.path.join(IMG_DIR, "Dino/saltosonic.png"))
+
+POWER_SONIC = pygame.image.load(os.path.join(IMG_DIR, "Dino/powersonic.png"))
+
+TYPE_SONIC = 'sonic'
+
+DINO_DEAD = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDead.png"))
+
+RUNNING_FINAL = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/dinofinal1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/dinofinal.png"))
 ]

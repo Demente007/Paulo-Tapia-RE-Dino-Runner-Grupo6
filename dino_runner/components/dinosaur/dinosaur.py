@@ -1,6 +1,7 @@
 import pygame
 from dino_runner.utils.constants import (RUNNING, 
-DUCKING, JUMPING, FLY, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, HAMMER_TYPE, JUMPING_HAMMER, RUNNING_HAMMER, DUCKING_HAMMER)
+DUCKING, JUMPING, FLY, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, HAMMER_TYPE, JUMPING_HAMMER, RUNNING_HAMMER, DUCKING_HAMMER,
+SONIC_DUCK,SONIC_JUMP,SONIC_RUN,TYPE_SONIC, DINO_DEAD, RUNNING_FINAL)
 from pygame.sprite import Sprite
 
 class Dinosaur(Sprite):
@@ -10,9 +11,10 @@ class Dinosaur(Sprite):
     JUMP_VEL = 8.5
 
     def __init__(self):
-        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
-        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
-        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER , TYPE_SONIC:SONIC_DUCK}
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER, TYPE_SONIC: SONIC_RUN}
+        self.run_end = {DEFAULT_TYPE: RUNNING_FINAL}
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER, TYPE_SONIC:SONIC_JUMP}
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
         self.dino_rect =  self.image.get_rect()
@@ -25,6 +27,7 @@ class Dinosaur(Sprite):
         self.dino_fly = False           #dino volando false
         self.jump_vel = self.JUMP_VEL
         self.setup_state_booleans()
+        self.despedida = False
 
     def setup_state_booleans(self):
         self.has_powerup = False
@@ -77,6 +80,34 @@ class Dinosaur(Sprite):
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
+    
+    def run_final(self):
+        self.type = DEFAULT_TYPE
+        self.image = self.run_img[self.type][self.step_index//5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = 400
+        self.step_index += 1
+        if self.step_index >= 10:
+             self.step_index = 0
+        if self.dino_rect.x <550:
+             self.X_POS += 1
+        elif self.dino_rect.x >= 550 and self.dino_rect.x <552:
+            self.image = DINO_DEAD
+            self.X_POS +=0.05
+        elif self.dino_rect.x >= 552:
+            self.despedida = True
+            
+    def run_final2(self):
+        self.type = DEFAULT_TYPE
+        self.image = self.run_end[self.type][self.step_index//5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = 400
+        self.step_index += 1
+        if self.step_index >= 10:
+             self.step_index = 0
+        self.X_POS -=3
 
     
     def duck(self):
