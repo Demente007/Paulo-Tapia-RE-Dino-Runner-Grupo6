@@ -1,6 +1,6 @@
 import pygame
 from dino_runner.utils.constants import (RUNNING, 
-DUCKING, JUMPING, FLY, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD)
+DUCKING, JUMPING, FLY, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, HAMMER_TYPE, JUMPING_HAMMER, RUNNING_HAMMER, DUCKING_HAMMER)
 from pygame.sprite import Sprite
 
 class Dinosaur(Sprite):
@@ -10,9 +10,9 @@ class Dinosaur(Sprite):
     JUMP_VEL = 8.5
 
     def __init__(self):
-        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
-        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
-        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
         self.dino_rect =  self.image.get_rect()
@@ -31,11 +31,13 @@ class Dinosaur(Sprite):
         self.shield = False
         self.show_text = False
         self.shield_time_up = 0
-
     def update(self, user_imput):
 
-        if self.dino_fly and not self.dino_run:
+        if self.dino_fly:
             self.fly()
+            self.dino_run = False
+            self.dino_duck = False
+            self.dino_jump = False
 
         elif self.dino_run:
             self.run()
@@ -111,14 +113,18 @@ class Dinosaur(Sprite):
             if time_to_show >= 0:
                 if self.show_text:
                     fond = pygame.font.Font('freesansbold.ttf', 18)
-                    text = fond.render(f"shield enable for {time_to_show}", True, (0,0,0))
+                    text = fond.render(f"POWER ENABLE FOR {time_to_show}", True, (0,0,0))
                     textRect = text.get_rect()
                     textRect.center = (500,40)
                     screen.blit(text, textRect)
             else:
                 self.shield = False 
-                self.update_to_default(SHIELD_TYPE)
+                self.type = DEFAULT_TYPE         # S
+                #self.update_to_default(SHIELD_TYPE)
 
-    def update_to_default(self, current_type):
+
+
+'''def update_to_default(self, current_type):
         if self.type == current_type:
-            self.type = DEFAULT_TYPE
+            self.type = DEFAULT_TYPE'''
+        

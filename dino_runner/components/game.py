@@ -1,11 +1,12 @@
 import pygame
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONDO_MENU, FONDO_GAME
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONDO_MENU, FONDO_GAME, PORTAL, HEART, FONDO2
 from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.obstacle.obstaclesManager import ObstacleManager
 from dino_runner.components.cloud.cloud import Cloud
 from dino_runner.components.score_menu.text_utils import *
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartMananger
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
+from dino_runner.components.obstacles2.obstaclesmanager2 import ObstacleManager2
 
 class Game:
     def __init__(self):
@@ -18,6 +19,8 @@ class Game:
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
+        self.x_pos_portal = SCREEN_WIDTH
+        self.y_pos_portal = -50
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.cloud = Cloud()
@@ -26,6 +29,12 @@ class Game:
         self.death_count = 0
         self.player_heart_manager = PlayerHeartMananger()
         self.power_up_manager = PowerUpManager()
+        self.level_2 = False                             #activa el fondo en nivel 2
+        self.level_1 = True
+        self.x_pos_fondo2 = 0
+        self.y_pos_fondo2 = 0
+        self.obstacle_manager2 = ObstacleManager2()
+
 
     def run(self):
         self.player.dino_fly = False
@@ -53,24 +62,54 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.cloud.update(self.game_speed)
-        self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player)
+        if self.level_1:
+            self.obstacle_manager.update(self , self.player)
+            self.power_up_manager.update(self.points, self.game_speed, self.player)
+        elif self.level_2:
+            self.obstacle_manager2.update(self, self.player)
+
+
 
 
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255,255,255))
-        self.player.draw(self.screen)
-        self.draw_background()
-        self.obstacle_manager.draw(self.screen)
-        self.cloud.draw(self.screen)
         self.score()
+        if self.points >= 200 :           # dibujando el portal
+            self.draw_portal()
+        if self.level_2:
+            self.fondo2()
+            self.obstacle_manager2.draw(self.screen)
+        elif self.level_1:
+            self.fondo1()
+        player_rect = pygame.draw.rect(self.screen, (0,0,0),((self.x_pos_portal + 200, self.y_pos_portal + 340), (50,50)))
+        if self.player.dino_rect.colliderect(player_rect):
+            pygame.time.delay(400)
+            self.level_1 = False
+            self.level_2 = True
+            self.player.dino_fly = True
+        self.player.draw(self.screen)
         self.player_heart_manager.draw(self.screen)     #dibujamos corazones
-        self.power_up_manager.draw(self.screen)
+
         pygame.display.update()
         pygame.display.flip()
     
+    def fondo1(self):
+        self.screen.fill((255,255,255))
+        self.obstacle_manager.draw(self.screen)
+        self.cloud.draw(self.screen)
+        self.draw_background()
+        self.power_up_manager.draw(self.screen)
+
+    def fondo2(self):
+        self.screen.blit(FONDO2, (self.x_pos_fondo2, self.y_pos_fondo2))
+        self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))
+        if self.x_pos_fondo2 <= -1200:
+            self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))
+            self.x_pos_fondo2 = 0
+        self.x_pos_fondo2 -= 1
+
+        
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
@@ -82,18 +121,13 @@ class Game:
 
     def score(self):
         self.points += 1 
-
+        
         if self.points %  100 == 0 :
             self.game_speed += 1
 
-        if self.points >= 400:
-            self.player.dino_fly = True
-        elif self.points < 400:
-            self.player.dino_fly = False
-
         score, score_rect = get_score_element(self.points)
         self.screen.blit(score, score_rect)
-        self.player.check_invincibility(self.screen)
+        self.player.check_invincibility(self.screen)                  ###########
 
     def show_menu(self):
         self.runing = True
@@ -130,8 +164,11 @@ class Game:
                 exit()
                 
             if event.type == pygame.KEYDOWN:   #si el evento detecta una tecla presionada empieza el juego
+                self.level_1 =True
+                self.level_2 =False
                 self.run()
 
-
-
-
+    def draw_portal(self):
+        self.screen.blit(PORTAL, (self.x_pos_portal, self.y_pos_portal))
+        self.x_pos_portal -= self.game_speed
+    

@@ -80,6 +80,18 @@ FONDO_GAME = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondoinicio1.jpg'))
 
 DEFAULT_TYPE = "default"
 
-HEART_COUNT = 3    #agregamos un contador de corazones
+HEART_COUNT = 2    #agregamos un contador de corazones
 
 SHIELD_TYPE = 'shield'
+
+HAMMER_TYPE = 'hammer'
+
+PORTAL = pygame.image.load(os.path.join(IMG_DIR, 'Other/portal.png'))
+ 
+FONDO2 = pygame.image.load(os.path.join(IMG_DIR, 'Other/fondo2.png'))
+
+
+HEAD_OBSTACLE = [
+    pygame.image.load(os.path.join(IMG_DIR, "Other/cabezaobs1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Other/cabezaobs2.png")), 
+]
