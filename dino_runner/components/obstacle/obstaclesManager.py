@@ -26,20 +26,24 @@ class ObstacleManager:
                # game.playing = False                  #en la colision el juego termina
     
                 #break                                            #rompemos el while
-                pygame.time.delay(100)
-                self.obstacles = []
+                if not game.player.shield:
+                    pygame.time.delay(100)
+                    self.obstacles = []
 
-                game.player_heart_manager.reduce_heart()
-                if game.player_heart_manager.heart_count > 0:
-                    game.player.shield = True
-                    game.player.show_text = False
-                    start_time = pygame.time.get_ticks()
-                    game.player.shield_time_up = start_time + 1000
+                    game.player_heart_manager.reduce_heart()
+                    if game.player_heart_manager.heart_count > 0:
+                        game.player.shield = True
+                        game.player.show_text = False
+                        start_time = pygame.time.get_ticks()
+                        game.player.shield_time_up = start_time + 1000
 
-                else : 
-                    pygame.time.delay(500)
-                    game.playing = False
-                    game.death_count += 1
+                    else : 
+                        pygame.time.delay(500)
+                        game.playing = False
+                        game.death_count += 1
+                        break
+                else:
+                    self.obstacles.remove(obstacle)
 
 
 
