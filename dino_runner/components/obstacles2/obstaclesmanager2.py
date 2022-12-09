@@ -25,6 +25,7 @@ class ObstacleManager2:
                         game.death_count += 1
                         break
 
+
     def draw(self, screen):
         for obstacle in self.obstacles2:
             obstacle.draw(screen)

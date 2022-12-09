@@ -119,3 +119,7 @@ RUNNING_FINAL = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/dinofinal1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/dinofinal.png"))
 ]
+
+MISIL = pygame.image.load(os.path.join(IMG_DIR, "Other/misil.png"))
+
+CARTUCHOS = pygame.image.load(os.path.join(IMG_DIR, "Other/cartuchos.png"))

@@ -7,6 +7,7 @@ from dino_runner.components.score_menu.text_utils import *
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartMananger
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
 from dino_runner.components.obstacles2.obstaclesmanager2 import ObstacleManager2
+from dino_runner.components.powerups2.powerup2_manager import PowerUpManager2
 
 class Game:
     def __init__(self):
@@ -37,6 +38,7 @@ class Game:
         self.playing_final = False                            #anadimos un boleano para activar el final en while
         self.portal_2 = False
         self.x_pos_final_fondo = 0
+        self.power_up_manager2 = PowerUpManager2()
  
 
     def game_principal(self):
@@ -79,13 +81,18 @@ class Game:
 
     def update(self): 
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, self.game_speed)
         self.cloud.update(self.game_speed)
         if self.level_1:
             self.obstacle_manager.update(self , self.player)
             self.power_up_manager.update(self.points, self.game_speed, self.player)
         elif self.level_2:
             self.obstacle_manager2.update(self, self.player)
+            self.power_up_manager2.update(self.points, self.game_speed, self.player)
+
+        if self.player.misil_rectx > 1100:
+            self.player.misil_atack = False
+            
 
 
 
@@ -96,6 +103,9 @@ class Game:
         if self.level_2:
             self.fondo2()
             self.obstacle_manager2.draw(self.screen)
+            if self.player.misil_atack:
+                self.player.draw_misil_on(self.screen)
+                self.player.misil_rectx += self.game_speed + 10
         elif self.level_1:
             self.fondo1()
         self.screen.blit(PORTAL, (self.x_pos_portal, self.y_pos_portal))
@@ -103,14 +113,14 @@ class Game:
         
         if self.player.dino_rect.colliderect(player_rect):
             pygame.time.delay(150)
-            if self.points > 2000:
+            if self.points > 400:
                 self.playing_final = True
                 self.playing = False
-            elif self.points <=2000:
+            elif self.points <=400:
                 self.level_1 = False
                 self.level_2 = True
                 self.player.dino_fly = True
-        if self.points >= 1500 :           # dibujando el portal
+        if self.points >= 200 :           # dibujando el portal
             self.draw_portal()
         self.score()
         self.player.draw(self.screen)
@@ -132,8 +142,8 @@ class Game:
         if self.x_pos_fondo2 <= -SCREEN_WIDTH:
             self.screen.blit(FONDO2, (SCREEN_WIDTH+self.x_pos_fondo2,self.y_pos_fondo2))
             self.x_pos_fondo2 = 0
-    
         self.x_pos_fondo2 -= 1
+        self.power_up_manager2.draw(self.screen)
     
     def draw_final(self): 
         self.clock.tick(FPS)
@@ -221,7 +231,7 @@ class Game:
    
     def draw_portal(self):
         self.x_pos_portal -= self.game_speed
-        if self.points >= 2100 and self.points< 2110:
+        if self.points >= 450 and self.points< 455:
             self.x_pos_portal = SCREEN_WIDTH + 200
             self.y_pos_portal = -50 
     

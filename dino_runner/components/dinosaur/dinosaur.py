@@ -1,7 +1,7 @@
 import pygame
 from dino_runner.utils.constants import (RUNNING, 
 DUCKING, JUMPING, FLY, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, HAMMER_TYPE, JUMPING_HAMMER, RUNNING_HAMMER, DUCKING_HAMMER,
-SONIC_DUCK,SONIC_JUMP,SONIC_RUN,TYPE_SONIC, DINO_DEAD, RUNNING_FINAL)
+SONIC_DUCK,SONIC_JUMP,SONIC_RUN,TYPE_SONIC, DINO_DEAD, RUNNING_FINAL, MISIL)
 from pygame.sprite import Sprite
 
 class Dinosaur(Sprite):
@@ -28,13 +28,31 @@ class Dinosaur(Sprite):
         self.jump_vel = self.JUMP_VEL
         self.setup_state_booleans()
         self.despedida = False
+        self.balas = 0
+        self.image_misil = MISIL
+        self.misil_rect = self.image_misil.get_rect()
+        self.misil_rectx = self.X_POS
+        self.misil_recty = self.Y_POS
+        self.misil_atack = False
+
+    def misil_atack_on(self):
+        self.misil_rectx = self.X_POS
+        self.misil_recty = self.Y_POS
+        self.balas -= 1
+
+    def draw_misil_on(self, screen):
+        screen.blit(MISIL,(self.misil_rectx ,self.misil_recty))
+
+    
+
+
 
     def setup_state_booleans(self):
         self.has_powerup = False
         self.shield = False
         self.show_text = False
         self.shield_time_up = 0
-    def update(self, user_imput):
+    def update(self, user_imput, game_speed):
 
         if self.dino_fly:
             self.fly()
@@ -73,7 +91,13 @@ class Dinosaur(Sprite):
         
         if self.step_index >= 10:
             self.step_index = 0
+            
 
+        if user_imput[pygame.K_RIGHT]: # and self.dino_fly:
+            if self.balas >0:
+               self.misil_atack_on()
+               self.misil_atack = True
+        
     def run(self):
         self.image = self.run_img[self.type][self.step_index//5]
         self.dino_rect = self.image.get_rect()
